@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CloudManager.Models.Device>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<h3><a asp-action="Create">Create New</a></h3>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorizationToken)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TargetCloudURL)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorizationToken)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TargetCloudURL)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DeviceID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DeviceID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DeviceID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
