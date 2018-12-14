@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<CloudManager.Models.Customer>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manage customer";
 }
 
-<h2>Index</h2>
+<h2>Manage customer</h2>
 
-<h3><a asp-action="Create">Create New</a></h3>
+<h4><a asp-action="Create">Create New</a></h4>
 
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.CustomerID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AmountOfDevices)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th></th>
         </tr>
@@ -24,11 +24,11 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <th>
+                @Html.DisplayFor(model => item.CustomerID)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AmountOfDevices)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CustomerID">Edit</a> |

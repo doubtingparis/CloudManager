@@ -51,7 +51,7 @@ namespace CloudManager.Controllers
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerID,Name,AmountOfDevices")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerID,Name")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +81,7 @@ namespace CloudManager.Controllers
         // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,Name,AmountOfDevices")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,Name")] Customer customer)
         {
             if (id != customer.CustomerID)
             {

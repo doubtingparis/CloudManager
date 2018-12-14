@@ -12,15 +12,11 @@ namespace CloudManager.Controllers
     {
         public IActionResult Index()
         {
-            ViewData["Message"] = "Placeholder";
-
             return View();
         }
 
         public IActionResult ManageCustomer()
         {
-            ViewData["Message"] = "Placeholder";
-
             return View();
         }
 

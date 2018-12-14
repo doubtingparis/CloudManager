@@ -14,19 +14,13 @@
             @Html.DisplayNameFor(model => model.CustomerID)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CustomerID)
+            @Html.DisplayFor(model => model.Customer.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.AuthorizationToken)
+            @Html.DisplayNameFor(model => model.AuthKey)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.AuthorizationToken)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TargetCloudURL)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TargetCloudURL)
+            @Html.DisplayFor(model => model.AuthKey)
         </dd>
     </dl>
 </div>

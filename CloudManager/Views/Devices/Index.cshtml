@@ -1,40 +1,40 @@
 ﻿@model IEnumerable<CloudManager.Models.Device>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manage device";
 }
 
-<h2>Index</h2>
+<h2>Manage device</h2>
 
-<h3><a asp-action="Create">Create New</a></h3>
+<h4><a asp-action="Create">Create New</a></h4>
 
 
 <table class="table">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.DeviceID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CustomerID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AuthorizationToken)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TargetCloudURL)
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+       @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CustomerID)
+                @Html.DisplayFor(modelItem => item.DeviceID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AuthorizationToken)
+                @Html.DisplayFor(modelItem => item.Customer.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TargetCloudURL)
+                @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.DeviceID">Edit</a> |
@@ -42,6 +42,6 @@
                 <a asp-action="Delete" asp-route-id="@item.DeviceID">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

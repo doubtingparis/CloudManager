@@ -26,7 +26,7 @@ namespace CloudManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorizationToken");
+                    b.Property<string>("ConnectionString");
 
                     b.Property<int>("CustomerID");
 

@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CloudManager.Models
 {
     public class Customer
     {
+        [Key]
+        [DisplayName("Customer ID")]
         public int CustomerID { get; set; }
+        
+        [Required]
+        [DisplayName("Name")]
         public string Name { get; set; }
-        public int AmountOfDevices { get; set; }
     }
 }

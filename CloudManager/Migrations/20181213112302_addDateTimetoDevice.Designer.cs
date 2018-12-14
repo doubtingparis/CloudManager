@@ -4,14 +4,16 @@ using CloudManager.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CloudManager.Migrations
 {
     [DbContext(typeof(CloudManagerContext))]
-    partial class CloudManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181213112302_addDateTimetoDevice")]
+    partial class addDateTimetoDevice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,7 @@ namespace CloudManager.Migrations
 
                     b.Property<int>("CustomerID");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("LastPing");
 
                     b.HasKey("DeviceID");
 

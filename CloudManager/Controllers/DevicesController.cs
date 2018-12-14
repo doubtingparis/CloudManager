@@ -6,22 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
+using CloudManager.ViewModels;
 
 namespace CloudManager.Controllers
 {
     public class DevicesController : Controller
     {
-        private readonly CloudManagerContext _context;
+        private CloudManagerContext db;
 
         public DevicesController(CloudManagerContext context)
         {
-            _context = context;
+            db = context;
         }
 
         // GET: Devices
-            public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Device.ToListAsync());
+            var devices = db.Device.Include(x => x.Customer);
+            return View(devices.ToList());
         }
 
         // GET: Devices/Details/5
@@ -32,8 +34,9 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Device
-                .FirstOrDefaultAsync(m => m.DeviceID == id);
+            //Device == id result with the customer name included
+            Device device = await db.Device.Include(x => x.Customer).FirstOrDefaultAsync(x => x.DeviceID == id);
+
             if (device == null)
             {
                 return NotFound();
@@ -45,18 +48,25 @@ namespace CloudManager.Controllers
         // GET: Devices/Create
         public IActionResult Create()
         {
-            return View();
+            IEnumerable<Customer> customer_selection = db.Customer.ToList();
+
+            Device_ViewModel view = new Device_ViewModel
+            {
+                CustomerSelection = customer_selection
+            };
+
+            return View(view);
         }
 
         // POST: Devices/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerID,DeviceID,AuthorizationToken,TargetCloudURL")] Device device)
+        public async Task<IActionResult> Create([Bind("CustomerID,DeviceID,ConnectionString")] Device device)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(device);
-                await _context.SaveChangesAsync();
+                db.Add(device);
+                await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(device);
@@ -70,18 +80,27 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Device.FindAsync(id);
+            var device = await db.Device.FindAsync(id);
             if (device == null)
             {
                 return NotFound();
             }
-            return View(device);
+            
+            IEnumerable<Customer> customer_selection = db.Customer.ToList();
+
+            Device_ViewModel view = new Device_ViewModel
+            {
+                CustomerSelection = customer_selection,
+                Device = device                
+            };
+
+            return View(view);
         }
 
         // POST: Devices/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,DeviceID,AuthorizationToken,TargetCloudURL")] Device device)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,DeviceID,ConnectionString")] Device device)
         {
             if (id != device.DeviceID)
             {
@@ -92,8 +111,8 @@ namespace CloudManager.Controllers
             {
                 try
                 {
-                    _context.Update(device);
-                    await _context.SaveChangesAsync();
+                    db.Update(device);
+                    await db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +138,7 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Device
+            var device = await db.Device
                 .FirstOrDefaultAsync(m => m.DeviceID == id);
             if (device == null)
             {
@@ -134,15 +153,15 @@ namespace CloudManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var device = await _context.Device.FindAsync(id);
-            _context.Device.Remove(device);
-            await _context.SaveChangesAsync();
+            var device = await db.Device.FindAsync(id);
+            db.Device.Remove(device);
+            await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DeviceExists(int id)
         {
-            return _context.Device.Any(e => e.DeviceID == id);
+            return db.Device.Any(e => e.DeviceID == id);
         }
     }
 }

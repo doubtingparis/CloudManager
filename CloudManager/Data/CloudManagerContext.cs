@@ -13,7 +13,9 @@ namespace CloudManager.Models
         {
         }
 
-        //DB details in appsettings.json
+        //Add migration with PMC 'Add-Migration [migration-name]'
+        //DB connection details in appsettings.json
+        
         //Device DB link
         public DbSet<Device> Device { get; set; }
 
