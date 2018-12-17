@@ -9,7 +9,7 @@ namespace CloudManager.Models
 {
     public class Device
     {
-        [DisplayName("Customer")]
+        [DisplayName("Customer ID")]
         [Required]
         public int CustomerID { get; set; }
 
@@ -21,7 +21,7 @@ namespace CloudManager.Models
         [Editable(false)]
         public string AuthKey { get; set; }
 
-        [DisplayName("Date connected")]
+        [DisplayName("Date created")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 

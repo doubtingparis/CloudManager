@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
 using CloudManager.ViewModels;
@@ -65,8 +64,11 @@ namespace CloudManager.Controllers
         // POST: Devices/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerID,DeviceID,ConnectionString")] Device device)
+        public async Task<IActionResult> Create([Bind("CustomerID,DeviceID,AuthKey,Date")] Device device)
         {
+            device.AuthKey = "abc123_src_from_devicecontroller"; //Key from Azure IOT
+            device.Date = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 db.Add(device);
@@ -104,7 +106,7 @@ namespace CloudManager.Controllers
         // POST: Devices/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,DeviceID,ConnectionString")] Device device)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,DeviceID,AuthKey")] Device device)
         {
             if (id != device.DeviceID)
             {

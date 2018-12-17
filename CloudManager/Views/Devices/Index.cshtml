@@ -4,10 +4,9 @@
     ViewData["Title"] = "Manage device";
 }
 
-<h2>Manage device</h2>
-
-<a asp-action="Create" class="btn btn-default" role="button" aria-pressed="true">Create new</a>
-
+<h2>MANAGE</h2>
+<h4>Device</h4>
+<hr />
 
 <table class="table">
     <thead>
@@ -21,11 +20,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            <th></th>
+            <th>
+                @* empty header to reserve space *@
+            </th>
         </tr>
     </thead>
     <tbody>
-       @foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.DeviceID)
@@ -45,3 +47,5 @@
         }
     </tbody>
 </table>
+
+<a asp-action="Create" class="btn btn-default" role="button" aria-pressed="true">Create new</a>

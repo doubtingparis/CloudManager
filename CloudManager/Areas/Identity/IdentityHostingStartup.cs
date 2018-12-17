@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
+// Settings already defined in StartUp.cs
+
+
 [assembly: HostingStartup(typeof(CloudManager.Areas.Identity.IdentityHostingStartup))]
 namespace CloudManager.Areas.Identity
 {
@@ -20,7 +24,6 @@ namespace CloudManager.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("IdentityDBContext")));
 
-                //Already defined in StartUp.cs
                 //services.AddDefaultIdentity<IdentityUser>()
                 //    .AddEntityFrameworkStores<IdentityDBContext>();
             });

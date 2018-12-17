@@ -4,14 +4,16 @@ using CloudManager.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace logintestapp.Data.Migrations
+namespace CloudManager.Migrations.IdentityDB
 {
     [DbContext(typeof(IdentityDBContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181217160009_redefine_user")]
+    partial class redefine_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -10,7 +10,7 @@ namespace CloudManager.Models
         public int CustomerID { get; set; }
         
         [Required]
-        [DisplayName("Name")]
+        [DisplayName("Customer name")]
         public string Name { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,26 +22,29 @@ namespace CloudManager
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. 
-        // Edit to add services to the container
+        // This method gets called by the runtime
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // Determines whether user consent for cookies is needed
+                // Determines whether user consent for cookies is required
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            // Specify ASP.NET Core 2.2 version
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            // Add the DB files using dependency injection
+
+            // Add the DB references using dependency injection
+            // ConnectionString found in appsettings.json
+            // Customers & devices
             services.AddDbContext<CloudManagerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CloudManagerContext")));
-
+            // Users/logins
             services.AddDbContext<IdentityDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityDBContext")));
+
 
             // Use default identity scheme for easy integration, can be customized later
             services.AddDefaultIdentity<IdentityUser>().AddDefaultUI(UIFramework.Bootstrap4).AddEntityFrameworkStores<IdentityDBContext>();
@@ -68,12 +70,12 @@ namespace CloudManager
                 options.User.RequireUniqueEmail = true;
 
                 // Ensures confirmed users only
-                options.SignIn.RequireConfirmedEmail = true;
+                // options.SignIn.RequireConfirmedEmail = true;
             });
         }
 
         // This method gets called by the runtime 
-        // Can edit this to configure the HTTP request pipeline
+        // Can edit this to configure the HTTP request pipeline and disable/enable site features
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Developer settings/environment to see exceptions
@@ -91,6 +93,8 @@ namespace CloudManager
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Recommended for privacy policy
             app.UseCookiePolicy();
 
             // Keeps controllers unaccessible for anyone without a valid Identity
