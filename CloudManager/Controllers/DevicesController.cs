@@ -7,13 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
 using CloudManager.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CloudManager.Controllers
 {
+    [Authorize]
     public class DevicesController : Controller
     {
+        //DB ref
         private CloudManagerContext db;
 
+        //constructor
         public DevicesController(CloudManagerContext context)
         {
             db = context;

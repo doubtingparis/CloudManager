@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 
 namespace CloudManager
 {
@@ -29,27 +29,58 @@ namespace CloudManager
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request
+                // Determines whether user consent for cookies is needed
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            // Add the DB file using dependency injection, to ensure availability
+            // Add the DB files using dependency injection
             services.AddDbContext<CloudManagerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CloudManagerContext")));
+
+            services.AddDbContext<IdentityDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityDBContext")));
+
+            // Use default identity scheme for easy integration, can be customized later
+            services.AddDefaultIdentity<IdentityUser>().AddDefaultUI(UIFramework.Bootstrap4).AddEntityFrameworkStores<IdentityDBContext>();
+
+            // Options & settings for Identity, if left untouched they default to stock settings
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password validation settings
+                // Requirements lowered for easy debugging/testing purposes
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Prevention for spam-bots and brute-force password crackers
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // Ensures no duplicate emails
+                options.User.RequireUniqueEmail = true;
+
+                // Ensures confirmed users only
+                options.SignIn.RequireConfirmedEmail = true;
+            });
         }
 
         // This method gets called by the runtime 
         // Can edit this to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //Browser developer settings/environment
+            // Developer settings/environment to see exceptions
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             // Route to errorpage
@@ -61,6 +92,9 @@ namespace CloudManager
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            // Keeps controllers unaccessible for anyone without a valid Identity
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

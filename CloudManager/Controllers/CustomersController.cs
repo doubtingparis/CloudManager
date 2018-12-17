@@ -6,22 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CloudManager.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
-        private readonly CloudManagerContext _context;
+        //DB ref
+        private readonly CloudManagerContext db;
 
+        //constructor
         public CustomersController(CloudManagerContext context)
         {
-            _context = context;
+            db = context;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customer.ToListAsync());
+            return View(await db.Customer.ToListAsync());
         }
 
         // GET: Customers/Details/5
@@ -32,7 +36,7 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customer
+            var customer = await db.Customer
                 .FirstOrDefaultAsync(m => m.CustomerID == id);
             if (customer == null)
             {
@@ -55,8 +59,8 @@ namespace CloudManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                db.Add(customer);
+                await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -70,7 +74,7 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = await db.Customer.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -92,8 +96,8 @@ namespace CloudManager.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    db.Update(customer);
+                    await db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,14 +122,12 @@ namespace CloudManager.Controllers
             {
                 return NotFound();
             }
-
-            var customer = await _context.Customer
+            var customer = await db.Customer
                 .FirstOrDefaultAsync(m => m.CustomerID == id);
             if (customer == null)
             {
                 return NotFound();
             }
-
             return View(customer);
         }
 
@@ -134,15 +136,15 @@ namespace CloudManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
+            var customer = await db.Customer.FindAsync(id);
+            db.Customer.Remove(customer);
+            await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customer.Any(e => e.CustomerID == id);
+            return db.Customer.Any(e => e.CustomerID == id);
         }
     }
 }

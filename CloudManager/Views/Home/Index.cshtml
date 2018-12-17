@@ -1,6 +1,53 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
     ViewData["Title"] = "CloudManager";
 }
 
 <h2>CloudManager</h2>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Logged in as user:</label>
+                <p>@User.Identity.Name</p>
+            </div>
+            <div class="form-group">
+                <label>Authorized user?</label>
+                <p>@User.Identity.IsAuthenticated</p>
+            </div>
+            <div class="form-group">
+                <label>Authentication level:</label>
+                <p>@User.Identity.AuthenticationType</p>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+
+
+
+
+
+@*{
+        <li class="nav-item">
+            <p>Logged in as @User.Identity.Name</p>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="btn btn-default">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn-lg btn-default" role="button" aria-pressed="true">Log in</a>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn-lg btn-default" role="button" aria-pressed="true">Register</a>
+    }*@
 

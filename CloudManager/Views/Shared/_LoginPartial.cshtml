@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<ul class="nav navbar-nav navbar-right">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
+        </li>
+        <li class="nav-item">
+            <form asp-page="/Account/Logout" asp-area="Identity" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        @* Unnecessary since everything routes to login if not authorized
+
+                <li class="nav-item">
+                <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>*@
+    }
+</ul>

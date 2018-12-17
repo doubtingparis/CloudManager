@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,11 +31,17 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CloudManager</a>
             </div>
+
             <div class="navbar-collapse collapse">
+                @if (SignInManager.IsSignedIn(User))
+                {
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Customers" asp-action="Index">Manage customers</a></li>
                     <li><a asp-area="" asp-controller="Devices" asp-action="Index">Manage devices</a></li>
                 </ul>
+                }
+                 @* Login html *@
+                <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>
@@ -41,9 +50,10 @@
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
+
         <footer>
-            <p></p>
+            <hr />
+            <div class="container"> CloudManager </div>
         </footer>
     </div>
 
