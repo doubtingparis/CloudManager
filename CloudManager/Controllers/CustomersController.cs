@@ -28,6 +28,14 @@ namespace CloudManager.Controllers
             return View(await db.Customer.ToListAsync());
         }
 
+        // GET: Customers device count (CustomerID)
+        //public int DeviceCount(int ID)
+        //{
+        //    var count = db.Device.Where(c => c.CustomerID == ID).Count();
+
+        //    return count;
+        //}
+
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {

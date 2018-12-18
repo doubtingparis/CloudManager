@@ -12,5 +12,6 @@ namespace CloudManager.Models
         [Required]
         [DisplayName("Customer name")]
         public string Name { get; set; }
+
     }
 }

@@ -23,9 +23,11 @@ namespace CloudManager.Models
 
         [DisplayName("Date created")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Editable(false)]
         public DateTime Date { get; set; }
 
         //Virtual allows Entity Framework to automatically manage proxies & DB
+        //Enables dropdown datafeed
         public virtual Customer Customer { get; set; }
     }
 }
