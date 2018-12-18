@@ -16,6 +16,12 @@ namespace CloudManager.Azure
 
         // IoT Hub connection string (different from device key)
         static readonly string connectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
+
+
+        public void ConnectCloud()
+        {
+            registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+        }
         
         
 
@@ -51,10 +57,7 @@ namespace CloudManager.Azure
                 return "Device not found";
             }
         }
-
-
-
-
+        
         //testing method
         private static async Task TestAddDeviceAsync(string DeviceID)
         {
