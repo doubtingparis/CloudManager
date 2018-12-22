@@ -1,42 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
-using CloudManager.Models;
-
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Common.Exceptions;
 
 
 namespace CloudManager.CloudServices
 {
-    public class AzureCloud : CloudController
+    public sealed class AzureCloud : CloudController
     {
+        // Host URL
+        private static string connectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
 
-        // IoT Hub connection URL
-        private static readonly string connectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
-
-        // Ref. to Azure SDK object
+        // Azure device CRUD manager
         RegistryManager registryManager = RegistryManager.CreateFromConnectionString(connectionString);
 
         // Construct
-        public AzureCloud()
+        public AzureCloud(string ConnectionString)
         {
+            connectionString = ConnectionString;
         }
+        
 
-        private async Task<Microsoft.Azure.Devices.Device> GetDevice(string ID)
+        // GET device from cloud that matches the ID in the app DB
+        private async Task<Device> GetDevice(string ID)
         {
             return await registryManager.GetDeviceAsync(ID);
         }
 
+        // CREATE
         public async Task<bool> CreateDevice(Models.Device device)
         {
             var deviceID = device.DeviceID.ToString();
-            Microsoft.Azure.Devices.Device localDevice;
+            Device localDevice;
             try
             {
                 // Device added
-                localDevice = await registryManager.AddDeviceAsync(new Microsoft.Azure.Devices.Device(deviceID));
+                localDevice = await registryManager.AddDeviceAsync(new Device(deviceID));
                 return true;
             }
             catch (DeviceAlreadyExistsException)
@@ -46,6 +45,7 @@ namespace CloudManager.CloudServices
             }
         }
 
+        // DELETE
         public async Task<bool> DeleteDevice(Models.Device device)
         {
             try
@@ -60,25 +60,33 @@ namespace CloudManager.CloudServices
             }
         }
 
-        public async void EditDevice(Models.Device device)
+        // EDIT
+        public async Task<bool> EditDevice(Models.Device device)
         {
-            var localDevice = await GetDevice(device.DeviceID.ToString());
-            await registryManager.UpdateDeviceAsync(localDevice);
+            Device localDevice;
+            try
+            {
+                // Successfully updated device
+                localDevice = await GetDevice(device.DeviceID.ToString());
+                await registryManager.UpdateDeviceAsync(localDevice);
+                return true;
+            }
+            catch (DeviceNotFoundException)
+            {
+                return false;
+            }
         }
 
-        // Continuous ping method not available from Azure IoT without using a lot of data
-        // https://feedback.azure.com/forums/321918-azure-iot/suggestions/31152514-allow-to-use-connectionstate-to-identify-conecte
-        //public async Task<bool> CheckConnection(Models.Device device)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
+        // GET device auth.key
         public async Task<string> GetConnectionString(Models.Device device)
         {
             try
             {
-                // Device found, return key
-                Microsoft.Azure.Devices.Device localDevice = await registryManager.GetDeviceAsync(device);
+                // Fetch device
+                var itemID = device.DeviceID.ToString();
+                Device localDevice = await registryManager.GetDeviceAsync(itemID);
+
+                // Get key
                 var key = localDevice.Authentication.SymmetricKey.PrimaryKey;
                 return key;
             }
@@ -88,31 +96,11 @@ namespace CloudManager.CloudServices
             }
         }
 
-
-
-        
-
-
-
-
-
-
-        //testing method
-        //private static async Task TestAddDeviceAsync(string DeviceID)
+        // Continuous ping method not available for Azure IoT without using a lot of data
+        // https://feedback.azure.com/forums/321918-azure-iot/suggestions/31152514-allow-to-use-connectionstate-to-identify-conecte
+        //public async Task<bool> CheckConnection(Models.Device device)
         //{
-        //    var deviceID = DeviceID;
-        //    Microsoft.Azure.Devices.Device device;
-        //    try
-        //    {
-        //        device = await registryManager.AddDeviceAsync(new Microsoft.Azure.Devices.Device(deviceID));
-        //        Console.WriteLine("Device created.");
-        //    }
-        //    catch (DeviceAlreadyExistsException)
-        //    {
-        //        Console.WriteLine("Device exists.. retrieving information.");
-        //        device = await registryManager.GetDeviceAsync(deviceID);
-        //    }
-        //    Console.WriteLine("Generated device key: {0}", device.Authentication.SymmetricKey.PrimaryKey);
+        //    throw new NotImplementedException();
         //}
     }
 }

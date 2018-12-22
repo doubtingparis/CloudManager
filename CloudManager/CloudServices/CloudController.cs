@@ -9,7 +9,9 @@ namespace CloudManager.CloudServices
     interface CloudController
     {
 
-        // Cloud service device operations
+        // Cloud service device operations.
+        // Interface for different hosts that inherits from this controller.
+        // Children must implement the methods of the interface.
 
         // Create new device
         Task<bool> CreateDevice(Device d);
@@ -17,6 +19,7 @@ namespace CloudManager.CloudServices
         // Delete device
         Task<bool> DeleteDevice(Device d);
 
+        // No edits necessary on the cloud server, edits are handled locally in CloudManager
         // Edit device
         Task<bool> EditDevice(Device d);
 

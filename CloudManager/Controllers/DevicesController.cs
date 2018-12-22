@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
 using CloudManager.ViewModels;
+using CloudManager.CloudServices;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CloudManager.Controllers
@@ -13,10 +14,15 @@ namespace CloudManager.Controllers
     [Authorize]
     public class DevicesController : Controller
     {
-        //DB ref
+        // Connection strings
+        private static string AzureConnectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
+        
+        
+        // DB ref
         private CloudManagerContext db;
+        private CloudController cloud = new AzureCloud(AzureConnectionString);
 
-        //constructor
+        // Constructor
         public DevicesController(CloudManagerContext context)
         {
             db = context;
@@ -66,14 +72,29 @@ namespace CloudManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CustomerID,DeviceID,AuthKey,Date")] Device device)
         {
-            device.AuthKey = "abc123_src_from_devicecontroller"; //Key from Azure IOT
             device.Date = DateTime.Now;
 
             if (ModelState.IsValid)
             {
-                db.Add(device);
-                await db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Create device in cloud
+                Task<bool> t1 = cloud.CreateDevice(device);
+                Task.WaitAll(t1);
+
+                // When creation is complete on cloud-side
+                if (t1.Result)
+                {
+                    // Key from Azure IOT
+                    Task<string> t2 = cloud.GetConnectionString(device);
+                    Task.WaitAll(t2);
+
+                    device.AuthKey = t2.Result; 
+                    
+                    // Create device in DB
+                    db.Add(device);
+                    await db.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(device);
         }
