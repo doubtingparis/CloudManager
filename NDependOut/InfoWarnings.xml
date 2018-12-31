@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<InfoWarnings>
+  <Info>Begin full analysis with NDepend v2018.2.1</Info>
+  <Warning>Input directory not found {C:\Program Files\dotnet\store\x64\netcoreapp2.2}</Warning>
+  <Info>Concurrent mode</Info>
+  <Info>.NET Assembly loaded from {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\bin\debug\netcoreapp2.2} 
+   CloudManager.dll   v1.0.0.0</Info>
+  <Info>.NET Assemblies loaded from {A:\Program Files\dotnet\shared\Microsoft.NETCore.App\2.2.0} 
+   System.Runtime.dll   v4.2.1.0
+   System.Diagnostics.Debug.dll   v4.1.1.0
+   System.Linq.Expressions.dll   v4.2.1.0
+   System.Threading.Tasks.dll   v4.1.1.0
+   System.Collections.dll   v4.1.1.0
+   System.ComponentModel.Annotations.dll   v4.2.1.0
+   System.ComponentModel.Primitives.dll   v4.2.1.0
+   System.Linq.Queryable.dll   v4.0.3.0
+   System.Linq.dll   v4.2.1.0
+   System.Diagnostics.DiagnosticSource.dll   v4.0.3.1
+   System.Runtime.Extensions.dll   v4.2.1.0
+   System.Security.Claims.dll   v4.1.1.0
+   mscorlib.dll   v4.0.0.0</Info>
+  <Info>.NET Assemblies loaded from {A:\Program Files\dotnet\sdk\NuGetFallbackFolder}  [ 0 , 19 ]
+   .\Microsoft.AspNetCore.Hosting.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Mvc.Core\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Razor.Runtime\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Razor.Runtime.dll   v2.2.0.0
+   .\Microsoft.Extensions.Configuration.UserSecrets\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.dll   v2.2.0.0
+   .\Microsoft.EntityFrameworkCore\2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll   v2.2.0.0
+   .\Microsoft.EntityFrameworkCore.Relational\2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll   v2.2.0.0
+   .\Microsoft.Extensions.Configuration.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll   v2.2.0.0
+   .\Microsoft.Extensions.DependencyInjection.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Http.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.CookiePolicy\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.CookiePolicy.dll   v2.2.0.0
+   .\Microsoft.Extensions.Identity.Core\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Identity.Core.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Routing\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Authorization\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Mvc.ViewFeatures\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Mvc.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Mvc.RazorPages\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.RazorPages.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Identity\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.dll   v2.2.0.0
+   .\Microsoft.Extensions.Identity.Stores\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Identity.Stores.dll   v2.2.0.0
+   .\Microsoft.Extensions.Logging.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Authentication.Abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Abstractions.dll   v2.2.0.0</Info>
+  <Info>.NET Assemblies loaded from {A:\Program Files\dotnet\sdk\NuGetFallbackFolder}  [ 20 , 33 ]
+   .\Microsoft.AspNetCore.Identity.UI\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.UI.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Identity.EntityFrameworkCore\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll   v2.2.0.0
+   .\Microsoft.EntityFrameworkCore.SqlServer\2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Hosting\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.dll   v2.2.0.0
+   .\Microsoft.AspNetCore\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.dll   v2.2.0.0
+   .\Microsoft.Extensions.Options\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Mvc\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Diagnostics\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Diagnostics.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.HttpsPolicy\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.HttpsPolicy.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.StaticFiles\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.StaticFiles.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Authentication\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.dll   v2.2.0.0
+   .\Microsoft.AspNetCore.Http.Features\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll   v2.2.0.0
+   .\System.Text.Encodings.Web\4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll   v4.0.3.0</Info>
+  <Info>.NET Assembly loaded from {A:\Users\TOM\.nuget\packages} 
+   .\Microsoft.Azure.Devices\1.17.1\lib\netstandard2.0\Microsoft.Azure.Devices.dll   v1.17.1.0</Info>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Program.cs} (last modified 31-12-2018 13:05:00) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Startup.cs} (last modified 31-12-2018 13:05:05) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\ViewModels\Device_Viewmodel.cs} (last modified 31-12-2018 12:05:29) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Controllers\CustomersController.cs} (last modified 31-12-2018 13:04:19) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Controllers\DevicesController.cs} (last modified 31-12-2018 13:04:13) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Controllers\HomeController.cs} (last modified 31-12-2018 13:03:39) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\CloudServices\AWSCloud.cs} (last modified 31-12-2018 12:06:39) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Areas\Identity\Data\IdentityDBContext.cs} (last modified 31-12-2018 12:06:01) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Warning>The source file {A:\Users\TOM\Source\Repos\CloudManager\CloudManager\Data\CloudManagerContext.cs} (last modified 31-12-2018 12:05:45) and the PDB file of the assembly {CloudManager} (last modified 30-12-2018 21:16:51) are not in-sync.</Warning>
+  <Info>52 source files parsed ; all source files found ; 9 source files not in-sync with PDB</Info>
+  <Info>0 code rule has been extracted from code.</Info>
+  <Info>No dependency cycle detected in assemblies referencement graph.</Info>
+  <Info>Do merge code generated by compiler into application code.</Info>
+  <Info>No SuppressMessageAttribute found in the analyzed code base. Since NDepend v2018.2 SuppressMessageAttribute can be used to suppress NDepend issues. Don't forget to set in your projects the compilation symbol CODE_ANALYSIS to use this attribute to suppress NDepend issues.</Info>
+  <Info>NDepend analysis done. Duration: 00:00</Info>
+</InfoWarnings>

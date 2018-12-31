@@ -15,7 +15,7 @@ namespace CloudManager.Controllers
     public class DevicesController : Controller
     {
         // Connection strings
-        private static string AzureConnectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
+        private static readonly string AzureConnectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
         
         
         // DB ref
