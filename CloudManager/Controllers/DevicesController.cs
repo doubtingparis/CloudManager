@@ -47,6 +47,7 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
+
             //Device == id result with the customer name included
             Device device = await db.Device.Include(x => x.Customer).FirstOrDefaultAsync(x => x.DeviceID == id);
 
@@ -54,7 +55,6 @@ namespace CloudManager.Controllers
             {
                 return NotFound();
             }
-
             return View(device);
         }
 
@@ -129,13 +129,6 @@ namespace CloudManager.Controllers
             //dropdown functionality
             IEnumerable<Customer> customer_selection = db.Customer.ToList();
 
-            //initialize view
-            //Device_ViewModel view = new Device_ViewModel
-            //{
-            //    CustomerSelection = customer_selection,
-            //    Device = device
-            //};
-
             device.CustomerSelection = customer_selection;
 
             return View(device);
@@ -157,8 +150,6 @@ namespace CloudManager.Controllers
                 {
                     db.Update(device);
                     await db.SaveChangesAsync();
-                    //testing access
-                    System.Threading.Thread.Sleep(1000);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -172,6 +163,7 @@ namespace CloudManager.Controllers
                     }
                 }
 
+                //Not currently in use
                 // Edit device in the cloud
                 //Task<bool> t1 = cloud.EditDevice(device);
                 //Task.WaitAll(t1);
