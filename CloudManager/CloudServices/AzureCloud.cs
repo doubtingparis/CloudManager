@@ -6,10 +6,13 @@ using Microsoft.Azure.Devices.Common.Exceptions;
 
 namespace CloudManager.CloudServices
 {
-    public sealed class AzureCloud : CloudController
+    public class AzureCloud : ICloud
     {
         // Host URL
-        private static string connectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
+        private static string connectionString = 
+            "HostName=cld-mgr-iot-hub.azure-devices.net;" +
+            "SharedAccessKeyName=iothubowner;" +
+            "SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
 
         // Azure device CRUD manager
         RegistryManager registryManager = RegistryManager.CreateFromConnectionString(connectionString);
@@ -19,7 +22,6 @@ namespace CloudManager.CloudServices
         {
             connectionString = ConnectionString;
         }
-        
 
         // GET device from cloud that matches the ID in the app DB
         private async Task<Device> GetDevice(string ID)

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace CloudManager.CloudServices
 {
-    interface CloudController
+    interface ICloud
     {
 
         // Cloud service device operations.

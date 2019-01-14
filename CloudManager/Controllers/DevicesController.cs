@@ -20,7 +20,7 @@ namespace CloudManager.Controllers
         
         // DB ref
         private CloudManagerContext db;
-        private CloudController cloud = new AzureCloud(AzureConnectionString);
+        private ICloud cloud = new AzureCloud(AzureConnectionString);
 
         // Constructor
         public DevicesController(CloudManagerContext context)
@@ -136,22 +136,29 @@ namespace CloudManager.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                // Edit device in cloud
+                Task<bool> t1 = cloud.EditDevice(device);
+                Task.WaitAll(t1);
+
+                if (t1.Result)
                 {
-                    db.Update(device);
-                    await db.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DeviceExists(device.DeviceID))
+                    try
                     {
-                        return NotFound();
+                        db.Update(device);
+                        await db.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!DeviceExists(device.DeviceID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
-                }
+                }                
                 return RedirectToAction(nameof(Index));
             }
             return View(device);
@@ -181,8 +188,16 @@ namespace CloudManager.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var device = await db.Device.FindAsync(id);
-            db.Device.Remove(device);
-            await db.SaveChangesAsync();
+
+            // Edit device in cloud
+            Task<bool> t1 = cloud.DeleteDevice(device);
+            Task.WaitAll(t1);
+
+            if (t1.Result)
+            {
+                db.Device.Remove(device);
+                await db.SaveChangesAsync();
+            }            
             return RedirectToAction(nameof(Index));
         }
 

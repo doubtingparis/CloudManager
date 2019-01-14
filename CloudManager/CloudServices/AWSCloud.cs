@@ -4,7 +4,7 @@ using CloudManager.Models;
 
 namespace CloudManager.CloudServices
 {
-    public sealed class AWSCloud : CloudController
+    public class AWSCloud : ICloud
     {
 
         // Class implemented for theoretical showcase.
@@ -20,7 +20,7 @@ namespace CloudManager.CloudServices
 
         // Host URL
         private static string connectionString;
-        
+
 
 
         // Not implemented methods

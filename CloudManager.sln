@@ -22,4 +22,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A10CB5A-41F4-48FB-9722-AC4645463B2E}
 	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\CloudManager.ndproj"
+	EndGlobalSection
 EndGlobal
