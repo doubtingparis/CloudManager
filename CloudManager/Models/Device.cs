@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CloudManager.Models
 {
@@ -15,16 +17,17 @@ namespace CloudManager.Models
         public int DeviceID { get; set; }
 
         [DisplayName("Authentication Key")]
-        [Editable(false)]
         public string AuthKey { get; set; }
 
         [DisplayName("Date created")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Editable(false)]
         public DateTime Date { get; set; }
 
         //Virtual allows Entity Framework to automatically manage proxies & DB
         //Enables dropdown datafeed
         public virtual Customer Customer { get; set; }
+
+        [NotMapped]
+        public IEnumerable<Customer> CustomerSelection { get; set; }
     }
 }

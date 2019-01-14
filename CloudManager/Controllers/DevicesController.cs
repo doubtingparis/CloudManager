@@ -8,6 +8,7 @@ using CloudManager.Models;
 using CloudManager.ViewModels;
 using CloudManager.CloudServices;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace CloudManager.Controllers
 {
@@ -15,7 +16,10 @@ namespace CloudManager.Controllers
     public class DevicesController : Controller
     {
         // Connection strings
-        private static readonly string AzureConnectionString = "HostName=cld-mgr-iot-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
+        private static readonly string AzureConnectionString = 
+            "HostName=cld-mgr-iot-hub.azure-devices.net;" +
+            "SharedAccessKeyName=iothubowner;" +
+            "SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
         
         
         // DB ref
@@ -59,7 +63,7 @@ namespace CloudManager.Controllers
         {
             IEnumerable<Customer> customer_selection = db.Customer.ToList();
 
-            Device_ViewModel view = new Device_ViewModel
+            Device view = new Device
             {
                 CustomerSelection = customer_selection
             };
@@ -70,33 +74,42 @@ namespace CloudManager.Controllers
         // POST: Devices/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerID,DeviceID,AuthKey,Date")] Device device)
+        public async Task<IActionResult> Create([Bind("CustomerID,AuthKey,Date")] Device device)
         {
-            device.Date = DateTime.Now;
+            Device deviceBuilder = device;
+
+            deviceBuilder.Date = DateTime.Now;
+            deviceBuilder.AuthKey = "temp";
 
             if (ModelState.IsValid)
             {
+                // Create device in DB
+                db.Add(deviceBuilder);
+                await db.SaveChangesAsync();
+
+                Device localDevice = await db.Device.LastAsync();
+
                 // Create device in cloud
-                Task<bool> t1 = cloud.CreateDevice(device);
+                Task<bool> t1 = cloud.CreateDevice(localDevice);
                 Task.WaitAll(t1);
 
                 // When creation is complete on cloud-side
                 if (t1.Result)
                 {
                     // Key from Azure IOT
-                    Task<string> t2 = cloud.GetConnectionString(device);
+                    Task<string> t2 = cloud.GetConnectionString(localDevice);
                     Task.WaitAll(t2);
 
-                    device.AuthKey = t2.Result; 
-                    
-                    // Create device in DB
-                    db.Add(device);
+                    localDevice.AuthKey = t2.Result;
+
+                    db.Update(localDevice);
                     await db.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(device);
+            //Not successful
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Devices/Edit/5
@@ -113,21 +126,25 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
             
+            //dropdown functionality
             IEnumerable<Customer> customer_selection = db.Customer.ToList();
 
-            Device_ViewModel view = new Device_ViewModel
-            {
-                CustomerSelection = customer_selection,
-                Device = device                
-            };
+            //initialize view
+            //Device_ViewModel view = new Device_ViewModel
+            //{
+            //    CustomerSelection = customer_selection,
+            //    Device = device
+            //};
 
-            return View(view);
+            device.CustomerSelection = customer_selection;
+
+            return View(device);
         }
 
         // POST: Devices/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,DeviceID,AuthKey")] Device device)
+        public async Task<IActionResult> Edit(int id, [Bind("DeviceID,CustomerID,AuthKey,Date")] Device device)
         {
             if (id != device.DeviceID)
             {
@@ -136,31 +153,33 @@ namespace CloudManager.Controllers
 
             if (ModelState.IsValid)
             {
-                // Edit device in cloud
-                Task<bool> t1 = cloud.EditDevice(device);
-                Task.WaitAll(t1);
-
-                if (t1.Result)
+                try
                 {
-                    try
+                    db.Update(device);
+                    await db.SaveChangesAsync();
+                    //testing access
+                    System.Threading.Thread.Sleep(1000);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DeviceExists(device.DeviceID))
                     {
-                        db.Update(device);
-                        await db.SaveChangesAsync();
+                        return NotFound();
                     }
-                    catch (DbUpdateConcurrencyException)
+                    else
                     {
-                        if (!DeviceExists(device.DeviceID))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
+                        throw;
                     }
-                }                
+                }
+
+                // Edit device in the cloud
+                //Task<bool> t1 = cloud.EditDevice(device);
+                //Task.WaitAll(t1);
+
+                //if (t1.Result)
+
                 return RedirectToAction(nameof(Index));
-            }
+            }         
             return View(device);
         }
 
@@ -172,8 +191,7 @@ namespace CloudManager.Controllers
                 return NotFound();
             }
 
-            var device = await db.Device
-                .FirstOrDefaultAsync(m => m.DeviceID == id);
+            var device = await db.Device.FirstOrDefaultAsync(m => m.DeviceID == id);
             if (device == null)
             {
                 return NotFound();
@@ -189,21 +207,38 @@ namespace CloudManager.Controllers
         {
             var device = await db.Device.FindAsync(id);
 
+            db.Device.Remove(device);
+            await db.SaveChangesAsync();
+
+
             // Edit device in cloud
             Task<bool> t1 = cloud.DeleteDevice(device);
             Task.WaitAll(t1);
 
             if (t1.Result)
             {
-                db.Device.Remove(device);
-                await db.SaveChangesAsync();
+                //device deleted
             }            
             return RedirectToAction(nameof(Index));
         }
 
+        // Does device exist in db?
         private bool DeviceExists(int id)
         {
             return db.Device.Any(e => e.DeviceID == id);
+        }
+
+        // Get device reference from DB by ID
+        private async Task<Device> GetDeviceAsync(int id)
+        {
+            var device = await db.Device.FirstOrDefaultAsync(m => m.DeviceID == id);
+            return device;
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

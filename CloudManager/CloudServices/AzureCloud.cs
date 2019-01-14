@@ -8,25 +8,21 @@ namespace CloudManager.CloudServices
 {
     public class AzureCloud : ICloud
     {
-        // Host URL
-        private static string connectionString = 
-            "HostName=cld-mgr-iot-hub.azure-devices.net;" +
-            "SharedAccessKeyName=iothubowner;" +
-            "SharedAccessKey=cBNuOJEEiw01xWyPZAM9SYriPua3UHTqsk19eZozmh4=";
-
         // Azure device CRUD manager
-        RegistryManager registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+        RegistryManager registryManager;
 
         // Construct
         public AzureCloud(string ConnectionString)
         {
-            connectionString = ConnectionString;
+            registryManager = RegistryManager.CreateFromConnectionString(ConnectionString);
         }
 
+        
+
         // GET device from cloud that matches the ID in the app DB
-        private async Task<Device> GetDevice(string ID)
+        private async Task<Device> GetDevice(int ID)
         {
-            return await registryManager.GetDeviceAsync(ID);
+            return await registryManager.GetDeviceAsync(ID.ToString());
         }
 
         // CREATE
@@ -65,13 +61,22 @@ namespace CloudManager.CloudServices
         // EDIT
         public async Task<bool> EditDevice(Models.Device device)
         {
-            Device localDevice;
+            Task<Device> localDevice;
             try
             {
                 // Successfully updated device
-                localDevice = await GetDevice(device.DeviceID.ToString());
-                await registryManager.UpdateDeviceAsync(localDevice);
-                return true;
+                localDevice = GetDevice(device.DeviceID);
+                Task.WaitAll(localDevice);
+
+                var d = localDevice.Result;
+
+                if (d != null)
+                {
+                    await registryManager.UpdateDeviceAsync(d);
+                    return true;
+                }
+                return false;
+                
             }
             catch (DeviceNotFoundException)
             {

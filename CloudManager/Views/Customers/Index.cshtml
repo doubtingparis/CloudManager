@@ -7,40 +7,47 @@
 <h2>MANAGE</h2>
 <h4>Customer</h4>
 <hr />
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @* empty header to reserve space *@
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayFor(model => item.CustomerID)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.CustomerID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.CustomerID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.CustomerID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <label class="control-label">No elements to show.</label><br />
+}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @* empty header to reserve space *@
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <th>
-                @Html.DisplayFor(model => item.CustomerID)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CustomerID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CustomerID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CustomerID">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
 
 
 <a asp-action="Create" class="btn btn-default" role="button" aria-pressed="true">Create new</a>
