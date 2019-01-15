@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CloudManager.Models;
-using CloudManager.ViewModels;
 using CloudManager.CloudServices;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
@@ -219,13 +218,18 @@ namespace CloudManager.Controllers
             return db.Device.Any(e => e.DeviceID == id);
         }
 
+
         // Get device reference from DB by ID
         private async Task<Device> GetDeviceAsync(int id)
         {
+            //If used from within another method that handles the DB ID already,  
+            //this method will fail and complain that multiple references to the 
+            //ID exists.
             var device = await db.Device.FirstOrDefaultAsync(m => m.DeviceID == id);
             return device;
         }
 
+        // Error action redirect
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

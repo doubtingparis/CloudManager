@@ -11,13 +11,11 @@ namespace CloudManager.CloudServices
         // Azure device CRUD manager
         RegistryManager registryManager;
 
-        // Construct
+        // Construct and establish connection to cloud RegMan
         public AzureCloud(string ConnectionString)
         {
             registryManager = RegistryManager.CreateFromConnectionString(ConnectionString);
         }
-
-        
 
         // GET device from cloud that matches the ID in the app DB
         private async Task<Device> GetDevice(int ID)
@@ -48,12 +46,13 @@ namespace CloudManager.CloudServices
         {
             try
             {
-                // Device found, delete device from cloud and return true
+                // Delete device from cloud and return true
                 await registryManager.RemoveDeviceAsync(device.DeviceID.ToString());
                 return true;
             }
             catch (DeviceNotFoundException)
             {
+                // Not found
                 return false;
             }
         }
@@ -67,7 +66,6 @@ namespace CloudManager.CloudServices
                 // Successfully updated device
                 localDevice = GetDevice(device.DeviceID);
                 Task.WaitAll(localDevice);
-
                 var d = localDevice.Result;
 
                 if (d != null)

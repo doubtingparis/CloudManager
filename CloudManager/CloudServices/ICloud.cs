@@ -20,10 +20,10 @@ namespace CloudManager.CloudServices
         // Edit device
         Task<bool> EditDevice(Device d);
 
-        // Ping the device
-        // Task<bool> CheckConnection(Device d);
-
-        // Return the device connection string
+        // Return device connection string
         Task<string> GetConnectionString(Device d);
+
+        // Ping device
+        // Task<bool> CheckConnection(Device d);
     }
 }
