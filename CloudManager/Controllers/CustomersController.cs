@@ -127,8 +127,7 @@ namespace CloudManager.Controllers
             {
                 return NotFound();
             }
-            var customer = await db.Customer
-                .FirstOrDefaultAsync(m => m.CustomerID == id);
+            var customer = await db.Customer.FirstOrDefaultAsync(m => m.CustomerID == id);
             if (customer == null)
             {
                 return NotFound();

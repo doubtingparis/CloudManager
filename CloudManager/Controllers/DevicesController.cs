@@ -46,8 +46,7 @@ namespace CloudManager.Controllers
             {
                 return NotFound();
             }
-
-
+            
             //Device == id result with the customer name included
             Device device = await db.Device.Include(x => x.Customer).FirstOrDefaultAsync(x => x.DeviceID == id);
 
@@ -182,8 +181,8 @@ namespace CloudManager.Controllers
             {
                 return NotFound();
             }
-
-            var device = await db.Device.FirstOrDefaultAsync(m => m.DeviceID == id);
+            //Device == id result with the customer name included
+            Device device = await db.Device.Include(x => x.Customer).FirstOrDefaultAsync(x => x.DeviceID == id);
             if (device == null)
             {
                 return NotFound();
